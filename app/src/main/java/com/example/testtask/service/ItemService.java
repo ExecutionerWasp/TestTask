@@ -1,9 +1,15 @@
 package com.example.testtask.service;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.JsonReader;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
+import com.example.testtask.controller.MainActivity;
 import com.example.testtask.domain.GithubItem;
 import com.example.testtask.repos.ItemRepos;
 
@@ -12,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -26,6 +33,14 @@ public final class ItemService {
 
     @NonNull
     private final ItemRepos itemRepos;
+
+    public GithubItem findByName(String name){
+        GithubItem item = itemRepos.findByName(name);
+        if (item == null){
+            Log.i(LOG_TAG, "NOT FOUND ITEM WITH NAME : " + name);
+        }
+        return item;
+    }
 
     public void getFromGithub(){
         AsyncTask.execute(new Runnable() {
@@ -80,5 +95,9 @@ public final class ItemService {
     public List<GithubItem> findAll() {
         Log.i(LOG_TAG, "Searching ..");
         return itemRepos.findAll();
+    }
+
+    public void openInBrowser(GithubItem item){
+
     }
 }

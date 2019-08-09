@@ -14,4 +14,6 @@ public interface Repository<T, ID extends Serializable> {
     List<T> findAll();
 
     T findById(ID id);
+
+    T findByName(String name);
 }

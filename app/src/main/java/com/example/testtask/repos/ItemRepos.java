@@ -121,6 +121,30 @@ public final class ItemRepos extends SQLiteOpenHelper implements Repository<Gith
     }
 
     @Override
+    public GithubItem findByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_GITS, new String[] {
+                        KEY_ID,
+                        KEY_URL,
+                        KEY_NAME,
+                        KEY_IMG }, KEY_NAME + "=?",
+                new String[] {
+                        String.valueOf(name) }, null, null, null, null);
+
+        if (cursor != null){
+            cursor.moveToFirst();
+        }
+
+        GithubItem item = new GithubItem(
+                Long.parseLong(cursor.getString(0)),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3));
+        return item;
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_GITS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
